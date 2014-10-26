@@ -12,8 +12,8 @@ function buildUrl() {
   var uri = new Uri("http://studiwerk.cms.rdts.de")
     .setPath("cgi-bin/cms")
     .addQueryParam("_SID", "NEW")
-    .addQueryParam("bereich", "system")
-    .addQueryParam("aktion", "export_speiseplan")
+    .addQueryParam("_bereich", "system")
+    .addQueryParam("_aktion", "export_speiseplan")
     .addQueryParam("datum", "20141022");
   return uri.toString();
 }
@@ -33,6 +33,7 @@ function fetchData(flatiron) {
     function (callback) {
       // return something
       flatiron.res.json({'status': 'done'});
+      flatiron.res.end();
       callback(null);
     }
   ],

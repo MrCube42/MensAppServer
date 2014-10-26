@@ -1,51 +1,36 @@
-var htmlparser = require('htmlparser2');
+var parserOptions = {
+  strict : false,
+  normalize : true,
+  lowercase : true
+}
 
-var toPrintOut = false;
+var sax = require('sax'),
+  parser = sax.parser(parserOptions);
 
-// function handleText(text) {
-// }
-
-// function handleOpenTag(tagname, attribs) {
-//   if (tagname === "mensa-1") {
-//   }
-//   if (tagname === "oeffnungszeit-1") {
-//   }
-// }
-
-// function handleCloseTag(tagname, callback) {
-//   if (tagname === "html") {
-//     // this must be the end of the document
-//     // so signal to the callback
-//     callback();
-//   }
-// }
+parser.onerror = function (e) {
+  // an error happened.
+  console.log(e);
+};
+parser.ontext = function (t) {
+  // got some text.  t is the string of text.
+};
+parser.onopentag = function (node) {
+  // opened a tag.  node has "name" and "attributes"
+  if(node.name==="mensa-1") {
+    console.log(node);  
+  }
+};
+parser.onattribute = function (attr) {
+  // an attribute.  attr has "name" and "value"
+};
+parser.onend = function () {
+  // parser stream is done, and ready to have more stuff written to it.
+  callback(null);
+};
 
 var parse = function (rawHtml, callback) {
-  // var parser = new htmlparser.Parser({
-  //   onopentag: function (tagname, attribs) {
-  //     handleOpenTag(tagname, attribs);
-  //   },
-  //   ontext: function (text) {
-  //     handleText(text);
-  //   },
-  //   onclosetag: function (tagname) {
-  //     handleCloseTag(tagname, callback);
-  //   }
-  // });
-  // parser.write(rawHtml);
-  // parser.end();
-
-  var handler = new htmlparser.DomHandler(function (error, dom) {
-      if (error) {
-        console.log("Error occurred: " + error);
-      } else {
-        console.log(dom);
-      }
-    });
-  var domParser = new htmlparser.Parser(handler);
-  domParser.write(rawHtml);
-  domParser.done();
-  callback(null);
+  parser.write(rawHtml);
+  
 };
 
 exports.parse = parse;
