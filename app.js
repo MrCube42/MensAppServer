@@ -34,19 +34,10 @@ function fetchData(flatiron) {
       // return something
       flatiron.res.json({'status': 'done'});
       flatiron.res.end();
+      console.log("Done.");
       callback(null);
     }
-  ],
-    // optional last callback
-    function (err, results) {
-      console.log("Done.");
-      if (err) {
-        console.log("An error occured: " + err);
-      }
-      if (results) {
-        console.log("Having results: " + results);
-      }
-    });
+  ]);
 }
 
 // function to start the app with flatiron
