@@ -2,29 +2,62 @@
 var flatiron = require('flatiron'),
   path = require('path'),
   app = flatiron.app;
+var Uri = require('jsuri');
 var requester = require('./mensapp-requester.js');
 var parser = require('./mensapp-parser.js');
+var flow = require('async');
 
-// define SWT base url
-var URL = "http://studiwerk.cms.rdts.de/cgi-bin/cms?_SID=NEW&_bereich=system&_aktion=export_speiseplan&datum=20141022";
+function buildUrl() {
+  // define SWT url
+  var uri = new Uri("http://studiwerk.cms.rdts.de")
+    .setPath("cgi-bin/cms")
+    .addQueryParam("_SID", "NEW")
+    .addQueryParam("bereich", "system")
+    .addQueryParam("aktion", "export_speiseplan")
+    .addQueryParam("datum", "20141022");
+  return uri.toString();
+}
+
+function fetchData(flatiron) {
+  // use asnyc waterfall for flow control and argument passing
+  flow.waterfall([
+    function (callback) {
+      // request the raw html from the SWT url
+      var url = buildUrl();
+      requester.request(url, callback);
+    },
+    function (html, callback) {
+      // parse it with the mensapp-parser
+      parser.parse(html, callback);
+    },
+    function (callback) {
+      // return something
+      flatiron.res.json({'status': 'done'});
+      callback(null);
+    }
+  ],
+    // optional last callback
+    function (err, results) {
+      console.log("Done.");
+      if (err) {
+        console.log("An error occured: " + err);
+      }
+      if (results) {
+        console.log("Having results: " + results);
+      }
+    });
+}
 
 // function to start the app with flatiron
-var startApp = function (route, port) {
+function startApp(route, port) {
   app.config.file({ file: path.join(__dirname, 'config', 'config.json') });
-
   app.use(flatiron.plugins.http);
-
   app.router.get(route, function () {
-    // on get use the requester to fetch SWT data
-    // parse it with the mensapp-parser
-    // and log to the console
-    requester.request(URL, parser.parse, console);
-    // return something
-    this.res.json({'status': 'done'});
+    // on get start fetching, parsing and storing SWT data
+    fetchData(this);
   });
-
   app.start(port);
-};
+}
 
 // start MensAppServer on index route and port 8080
 startApp('/', 8080);
