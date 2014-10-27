@@ -1,4 +1,5 @@
 var dejavu = require('dejavu');
+var Food = require('./food.js');
 var OpenHours = require('./openhours.js');
 
 var mensaIdToNameMappings = {
@@ -27,6 +28,7 @@ var Mensa = dejavu.Class.declare({
   _name: null,
   _type: null,
   _openHours : null,
+  _food: null,
 
   initialize: function (mensaId) {
     this._setName(mensaId);
@@ -47,7 +49,25 @@ var Mensa = dejavu.Class.declare({
 
   getOpenHours: function () {
     return this._openHours;
+  },
+
+  setFood: function (food) {
+    this._food = food;
+  },
+
+  getFood: function () {
+    return this._food;
+  },
+
+  toJson: function () {
+    return {
+      "name": this._name,
+      "type": this._type,
+      "openHours": this._openHours.toJson(),
+      "food": this._food.toJson()
+    };
   }
+
 });
 
 module.exports = Mensa;

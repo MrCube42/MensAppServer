@@ -22,6 +22,10 @@ var OpenHours = dejavu.Class.declare({
     return this._holiday;
   },
 
+  setHolidayOpenHours: function (rawHolidayOpenHours) {
+    this._holiday = this._parseOpenHours(rawHolidayOpenHours);
+  },
+
   hasHolidayOpenHours: function () {
     return this._holiday.length > 0;
   },
@@ -34,7 +38,15 @@ var OpenHours = dejavu.Class.declare({
       result.push(entries[i].trim());
     }
     return result;
+  },
+
+  toJson: function () {
+    return {
+      "normal": this._normal,
+      "holiday": this._holiday
+    };
   }
+
 });
 
 module.exports = OpenHours;
