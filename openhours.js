@@ -4,10 +4,13 @@ var dejavu = require('dejavu');
 var OpenHours = dejavu.Class.declare({
   $name: "OpenHours",
 
-  _normal : [],
-  _holiday : [],
+  _normal : null,
+  _holiday : null,
 
   initialize: function (rawOpenHours, rawHolidayOpenHours) {
+    if (!rawOpenHours) {
+      throw new Error("ArgumentNullException: First argument rawOpenHours");
+    }
     this._normal = this._parseOpenHours(rawOpenHours);
     if (rawHolidayOpenHours) {
       this._holiday = this._parseOpenHours(rawHolidayOpenHours);
@@ -22,12 +25,8 @@ var OpenHours = dejavu.Class.declare({
     return this._holiday;
   },
 
-  setHolidayOpenHours: function (rawHolidayOpenHours) {
-    this._holiday = this._parseOpenHours(rawHolidayOpenHours);
-  },
-
   hasHolidayOpenHours: function () {
-    return this._holiday.length > 0;
+    return (this._holiday !== null);
   },
 
   _parseOpenHours: function (openHours) {
