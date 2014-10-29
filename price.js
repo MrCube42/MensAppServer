@@ -8,21 +8,24 @@ var Price = dejavu.Class.declare({
   _guestPrice: null,
 
   initialize: function (student, employee, guest) {
+    if(!student) {
+      throw new Error("ArgumentNullException: First argument studentPrice");
+    }
     this._studentPrice = student;
     this._employeePrice = employee;
     this._guestPrice = guest;
   },
 
-  addStudentPrice: function (price) {
-    this._studentPrice = price;
+  getStudentPrice: function (price) {
+    return this._studentPrice;
   },
 
-  addEmployeePrice: function (price) {
-    this._employeePrice = price;
+  getEmployeePrice: function (price) {
+    return this._employeePrice;
   },
 
-  addGuestPrice: function (price) {
-    this._guestPrice = price;
+  getGuestPrice: function (price) {
+    return this._guestPrice;
   },
 
   toJson: function () {

@@ -12,15 +12,7 @@ var FoodPart = dejavu.Class.declare({
   },
 
   getFood: function () {
-    return this.food;
-  },
-
-  setFood: function (food) {
-    this._food = food;
-  },
-
-  setPrice: function (price) {
-    this._price = price;
+    return this._food;
   },
 
   getPrice: function () {
