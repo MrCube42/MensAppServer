@@ -7,6 +7,9 @@ var FoodPart = dejavu.Class.declare({
   _price: null,
 
   initialize: function (food, price) {
+    if(!food) {
+      throw new Error("ArgumentNullException: First argument food");
+    }
     this._food = food;
     this._price = price;
   },

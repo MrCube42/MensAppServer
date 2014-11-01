@@ -1,5 +1,5 @@
 var should = require('should');
-var OpenHours = require('../openhours.js');
+var OpenHours = require('../openhours');
 
 describe('OpenHours', function () {
 
