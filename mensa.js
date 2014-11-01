@@ -1,6 +1,5 @@
 var dejavu = require('dejavu');
 var Food = require('./food.js');
-var OpenHours = require('./openhours.js');
 
 // Mensa Class
 var Mensa = dejavu.Class.declare({
@@ -16,16 +15,16 @@ var Mensa = dejavu.Class.declare({
     this._type = type;
   },
 
-  setOpenHours: function (rawOpenHours, rawHolidayOpenHours) {
-    this._openHours = new OpenHours(rawOpenHours, rawHolidayOpenHours);
-  },
-
-  getOpenHours: function () {
-    return this._openHours;
+  setOpenHours: function (openHours) {
+    this._openHours = openHours;
   },
 
   setFood: function (food) {
     this._food = food;
+  },
+
+  getOpenHours: function () {
+    return this._openHours;
   },
 
   getFood: function () {

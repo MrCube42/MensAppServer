@@ -10,6 +10,8 @@ var MensaBuilder = dejavu.Class.declare({
   $name: "MensaBuilder",
 
   _mensa: null,
+  _normalOpenHours: null,
+  _holidayOpenHours: null,
   _mensaIdToTypeMappings: {
     1 : "Uni",
     2 : "Hochschule",
@@ -36,7 +38,20 @@ var MensaBuilder = dejavu.Class.declare({
     this._mensa = mensa;
   },
 
+  addNormalOpenHours: function (rawOpenHours) {
+    this._normalOpenHours = rawOpenHours;
+    return this;
+  },
+
+  addHolidayOpenHours: function (rawOpenHours) {
+    this._holidayOpenHours = rawOpenHours;
+    return this;
+  },
+
   build: function () {
+    if (this._normalOpenHours) {
+      this._mensa.setOpenHours(new OpenHours(this._normalOpenHours, this._holidayOpenHours));
+    }
     return this._mensa;
   }
 

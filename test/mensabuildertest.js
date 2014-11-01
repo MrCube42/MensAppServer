@@ -1,4 +1,5 @@
 var should = require('should');
+var OpenHours = require('../openhours');
 var MensaBuilder = require('../mensabuilder');
     
 describe('MensaBuilder', function () {
@@ -22,6 +23,22 @@ describe('MensaBuilder', function () {
       should(type).be.ok;
       name.should.equal("Tarforst");
       type.should.equal("Uni");
+    });
+
+    it('should build and return a mensa with open hours', function () {
+      var testOpenHours = new OpenHours(
+        "Mo-Do 11:15 Uhr bis 14:15 Uhr, Fr 11:30 Uhr bis 13:30 Uhr",
+        "Mo-Do 11:30 Uhr bis 13:45 Uhr, Fr 11:30 Uhr bis 13:30 Uhr"
+        );
+      var builder = new MensaBuilder(1);
+      var mensa = builder
+        .addNormalOpenHours("Mo-Do 11:15 Uhr bis 14:15 Uhr, Fr 11:30 Uhr bis 13:30 Uhr")
+        .addHolidayOpenHours("Mo-Do 11:30 Uhr bis 13:45 Uhr, Fr 11:30 Uhr bis 13:30 Uhr")
+        .build();
+      should(mensa).be.ok;
+      var openHours = mensa.getOpenHours();
+      should(openHours).be.ok;
+      openHours.toJson().should.eql(testOpenHours.toJson());
     });
 
   });
