@@ -4,13 +4,6 @@ var MensaBuilder = require('../mensabuilder');
     
 describe('MensaBuilder', function () {
 
-  describe('.initialize', function () {
-
-    it('should...', function () {
-    });
-
-  });
-
   describe('.build', function () {
 
     it('should build and return a proper mensa', function () {

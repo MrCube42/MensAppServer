@@ -13,13 +13,13 @@ var FoodBuilder = dejavu.Class.declare({
   _studentPrice: [],
   _employeePrice: [],
   _guestPrice: [],
-  _currentFoodPartIndex: 0,
+  _currentFoodPartIndex: -1,
 
   initialize: function () {
   },
 
   addFoodPart: function (foodPartDescription) {
-    this._foodPart[this._currentFoodPartIndex++] = foodPartDescription;
+    this._foodPart[++this._currentFoodPartIndex] = foodPartDescription;
     return this;
   },
 
@@ -42,12 +42,14 @@ var FoodBuilder = dejavu.Class.declare({
     var i;
     var part;
     var food = new Food();
-    for (i = 0; i < this._currentFoodPartIndex; i++) {
+    for (i = 0; i <= this._currentFoodPartIndex; i++) {
       part = new FoodPart(
         this._foodPart[i],
-        this._studentPrice[i],
-        this._employeePrice[i],
-        this._guestPrice[i]
+        new Price(
+          this._studentPrice[i],
+          this._employeePrice[i],
+          this._guestPrice[i]
+        )
       );
       food.addFoodPart(part);
     }

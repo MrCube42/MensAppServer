@@ -4,26 +4,26 @@ var FoodPart = require('./foodpart.js');
 var Food = dejavu.Class.declare({
   $name: "Food",
 
-  _name: null,
+  _description: null,
   _menuPrice: null,
 
   _parts: null,
 
-  initialize: function (name) {
-    this._name = name;
+  initialize: function (description) {
+    this._description = description;
     this._parts = [];
   },
 
-  hasName: function () {
-    return this._name !== null;
+  hasDescription: function () {
+    return ((this._description !== null) && (this._description !== undefined));
   },
 
-  getName: function () {
-    return this._name;
+  getDescription: function () {
+    return this._description;
   },
 
   hasMenuPrice: function () {
-    return this._menuPrice !== null;
+    return ((this._menuPrice !== null) && (this._menuPrice !== null));
   },
 
   setMenuPrice: function (price) {
@@ -45,11 +45,11 @@ var Food = dejavu.Class.declare({
   toJson: function () {
     var foodParts = [];
     var i;
-    for (i = 0; i < this._parts; i++) {
-      foodParts = this._parts[i].toJson();
+    for (i = 0; i < this._parts.length; i++) {
+      foodParts.push(this._parts[i].toJson());
     }
     return {
-      "name": this._name,
+      "name": this._description,
       "menuPrice": this._menuPrice,
       "foodParts": foodParts
     };
